@@ -1,0 +1,133 @@
+ui:
+  match: []
+  hide: []
+  transfer: false
+  through: false
+  escClose: true
+  background: true
+  closeDied: false
+  show: true
+  packetHandler:
+    init: |-
+      var.title = packet['title']
+      val.inputs.actions['init'](packet['type'])
+      val.button.actions['init'](packet['type'])
+    result: |-
+      var.title = packet
+    close: |-
+      var.closed = true
+      async {
+        Thread.sleep(500)
+        self.close()
+      }
+
+controls:
+  main:
+    type: adaptive
+    attribute:
+      point: ~middle_center
+      width: "1920"
+      height: "1080"
+    children:
+      bp:
+        type: texture
+        attribute:
+          point: ~middle_center
+          width: 1000
+          height: 500
+          normal: ~AXLoginView/background.png
+        children:
+          title:
+            type: text
+            attribute:
+              x: 500
+              y: 28
+              center: true
+              fontSize: 120
+              texts:
+                - ~&7&lArcartXLogin
+          subtitle:
+            type: "Text"
+            attribute:
+              x: 500
+              y: 150
+              center: true
+              fontSize: 60
+              texts:
+                - "var.title"
+          button:
+            type: texture
+            val: "button"
+            attribute:
+              x: 450
+              y: 400
+              width: 100
+              height: 50
+              normal: ~AXLoginView/button.png
+              hover: ~AXLoginView/button_.png
+              fontSize: 50
+              mode: 0 # 这里是个自定义属性
+            action:
+              init: |-
+                switch(args[0]){
+                  case 'login'{
+                    self.texts = '&a登陆'
+                  } 
+                  case 'register'{
+                    self.texts = '&a注册'
+                    self.mode = 1
+                  }
+                  case 'change' {
+                    self.texts = '&a改密'
+                    self.mode = 2
+                  }
+                }
+              click: |-
+                if(var.closed){
+                  return
+                }
+                switch(self.mode){
+                  case 0 {
+                    Packet.send('login',val.inputs['textInput'].getContent())
+                  }
+                  case 1 {
+                    Packet.send('register',val.inputs['textInput'].getContent(),val.inputs['textInput2'].getContent())
+                  }
+                  case 2 {
+                    Packet.send('change',val.inputs['textInput'].getContent(),val.inputs['textInput2'].getContent(),val.inputs['textInput3'].getContent())
+                  }
+                }
+          inputs:
+            type: vstack
+            val: "inputs"
+            attribute:
+              y: 210
+              width: 1000
+              spaceBetween: 25
+            action:
+              init: |-
+                switch(args[0]){
+                  case 'login'{
+                    self['textInput'].emptyText = '&a请输入登录密码'
+                  } 
+                  case 'register'{
+                    self['textInput'].emptyText = '&a请输入注册密码'
+                    self['textInput'].copy('textInput2').emptyText = '&a请再次输入注册密码'
+                  }
+                  case 'change' {
+                    self['textInput'].emptyText = '&a请输入原密码'
+                    self['textInput'].copy('textInput2').emptyText = '&a请输入新密码'
+                    self['textInput'].copy('textInput3').emptyText = '&a请再次输入新密码'
+                  }
+                }
+            children:
+              textInput:
+                type: textbox
+                attribute:
+                  x: 250
+                  width: 500
+                  height: 35
+                  background: ~0,0,0
+                  fontSize: 50
+                  passwordChar: ~※
+                  
