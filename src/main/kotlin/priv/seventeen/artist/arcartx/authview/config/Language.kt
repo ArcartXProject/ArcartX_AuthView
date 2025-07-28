@@ -20,7 +20,7 @@ import com.google.gson.annotations.SerializedName
 import priv.seventeen.artist.arcartx.internal.config.ArcartXConfig
 import taboolib.platform.util.bukkitPlugin
 
-class Language: ArcartXConfig(bukkitPlugin,"language.yaml") {
+class Language: ArcartXConfig(bukkitPlugin,"language") {
 
     @SerializedName("loginTitle")
     var loginTitle: String = "&8欢迎回到&c小猪出海服务器&8,请登录"
