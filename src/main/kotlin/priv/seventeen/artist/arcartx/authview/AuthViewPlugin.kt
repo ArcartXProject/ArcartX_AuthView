@@ -19,21 +19,24 @@ package priv.seventeen.artist.arcartx.authview
 import priv.seventeen.artist.arcartx.authview.command.OpenCommand
 import priv.seventeen.artist.arcartx.authview.command.ReloadCommand
 import priv.seventeen.artist.arcartx.authview.config.Language
+import priv.seventeen.artist.arcartx.authview.config.Setting
 import priv.seventeen.artist.arcartx.authview.view.ViewHandler.registerView
 import priv.seventeen.artist.arcartx.internal.command.AXCommand
 import priv.seventeen.artist.arcartx.internal.command.AXCommandContainer
 import priv.seventeen.artist.arcartx.internal.message.ArcartXSender.Companion.printStart
 import taboolib.common.platform.Plugin
-import taboolib.common.platform.function.info
 import taboolib.platform.util.bukkitPlugin
 
 object ArcartXAuthView : Plugin() {
 
     lateinit var language: Language
 
+    lateinit var setting: Setting
+
     override fun onEnable() {
         bukkitPlugin.printStart(0)
         language = Language()
+        setting = Setting()
         // 注册UI
         registerView()
         // 注册命令

@@ -19,13 +19,18 @@ package priv.seventeen.artist.arcartx.authview.listener
 import fr.xephi.authme.api.v3.AuthMeApi
 import priv.seventeen.artist.arcartx.api.ArcartXAPI
 import priv.seventeen.artist.arcartx.authview.ArcartXAuthView.language
+import priv.seventeen.artist.arcartx.authview.ArcartXAuthView.setting
 import priv.seventeen.artist.arcartx.authview.view.ViewHandler.VIEW_ID
+import priv.seventeen.artist.arcartx.event.client.ClientExtraSlotClickEvent
 import priv.seventeen.artist.arcartx.event.client.ClientInitializedEvent
 import taboolib.common.platform.event.SubscribeEvent
 
 
 @SubscribeEvent
 fun onPlayerClientLoaded(event: ClientInitializedEvent.End) {
+    if(!setting.enable){
+        return
+    }
     if (AuthMeApi.getInstance().isRegistered(event.player.name)) {
         ArcartXAPI.getUIRegistry().open(event.player, VIEW_ID) {
             // 当ui打开后发起回调
@@ -43,5 +48,12 @@ fun onPlayerClientLoaded(event: ClientInitializedEvent.End) {
                 "title" to language.registerTitle
             ))
         }
+    }
+}
+
+@SubscribeEvent
+fun onPlayerClickSlot(event: ClientExtraSlotClickEvent){
+    if(!AuthMeApi.getInstance().isAuthenticated(event.player)){
+        event.isCancelled = true
     }
 }

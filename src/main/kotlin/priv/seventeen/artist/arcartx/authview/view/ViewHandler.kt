@@ -20,6 +20,7 @@ import fr.xephi.authme.api.v3.AuthMeApi
 import org.bukkit.entity.Player
 import priv.seventeen.artist.arcartx.api.ArcartXAPI
 import priv.seventeen.artist.arcartx.authview.ArcartXAuthView.language
+import priv.seventeen.artist.arcartx.authview.ArcartXAuthView.setting
 import priv.seventeen.artist.arcartx.core.ui.adapter.ArcartXUI
 import priv.seventeen.artist.arcartx.core.ui.adapter.CallBackType
 import taboolib.platform.util.bukkitPlugin
@@ -54,6 +55,7 @@ object ViewHandler {
     // 重载UI和语言文件
     fun reload(){
         language.reload()
+        setting.reload()
         ArcartXAPI.getUIRegistry().reload(VIEW_ID, File(bukkitPlugin.dataFolder, "view.yml"))
     }
 
