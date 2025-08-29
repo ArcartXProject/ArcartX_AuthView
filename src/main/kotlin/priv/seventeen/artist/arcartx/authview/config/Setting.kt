@@ -6,6 +6,11 @@ import taboolib.platform.util.bukkitPlugin
 
 class Setting : ArcartXConfig(bukkitPlugin,"enable") {
 
+
+
     @SerializedName("enableView")
     var enable: Boolean = true
+
+    @SerializedName("loginClose")
+    val loginClose: Boolean = false
 }

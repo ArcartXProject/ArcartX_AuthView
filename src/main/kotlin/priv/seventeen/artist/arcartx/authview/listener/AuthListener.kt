@@ -17,6 +17,7 @@
 package priv.seventeen.artist.arcartx.authview.listener
 
 import fr.xephi.authme.api.v3.AuthMeApi
+import fr.xephi.authme.events.LoginEvent
 import priv.seventeen.artist.arcartx.api.ArcartXAPI
 import priv.seventeen.artist.arcartx.authview.ArcartXAuthView.language
 import priv.seventeen.artist.arcartx.authview.ArcartXAuthView.setting
@@ -28,7 +29,7 @@ import taboolib.common.platform.event.SubscribeEvent
 
 @SubscribeEvent
 fun onPlayerClientLoaded(event: ClientInitializedEvent.End) {
-    if(!setting.enable){
+    if(!setting.enable || AuthMeApi.getInstance().isAuthenticated(event.player)){
         return
     }
     if (AuthMeApi.getInstance().isRegistered(event.player.name)) {
@@ -55,5 +56,12 @@ fun onPlayerClientLoaded(event: ClientInitializedEvent.End) {
 fun onPlayerClickSlot(event: ClientExtraSlotClickEvent){
     if(!AuthMeApi.getInstance().isAuthenticated(event.player)){
         event.isCancelled = true
+    }
+}
+
+@SubscribeEvent
+fun onAuth(event: LoginEvent){
+    if(setting.loginClose){
+        ArcartXAPI.getUIRegistry().close(event.player, VIEW_ID)
     }
 }
